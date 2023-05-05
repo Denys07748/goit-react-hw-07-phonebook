@@ -2,9 +2,9 @@
 import { FormEl } from './ContactForm.styled';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
-import { getContacts } from 'redux/selectors';
+import { useSelector } from 'react-redux';
+// import { addContact } from 'redux/contactsSlice';
+import { selectContacts } from 'redux/selectors';
 
 const {
   validName: { checkName, messageName },
@@ -38,8 +38,8 @@ const initialValues = {
 };
 
 const ContactForm = () => {
-  const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  // const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = (values, { resetForm }) => {
     const isIncludes = contacts.some(
@@ -52,7 +52,7 @@ const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact(values));
+    // dispatch(addContact(values));
     resetForm();
   };
 
