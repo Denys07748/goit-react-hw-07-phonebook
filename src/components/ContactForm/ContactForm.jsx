@@ -1,9 +1,8 @@
-// import PropTypes from 'prop-types';
 import { FormEl } from './ContactForm.styled';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { useSelector } from 'react-redux';
-// import { addContact } from 'redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/operations';
 import { selectContacts } from 'redux/selectors';
 
 const {
@@ -26,7 +25,7 @@ const schema = yup.object().shape({
     .string()
     .matches(checkName, messageName)
     .required('Name is required'),
-  number: yup
+  phone: yup
     .string()
     .matches(checkNum, messageNum)
     .required('Number is required'),
@@ -34,25 +33,25 @@ const schema = yup.object().shape({
 
 const initialValues = {
   name: '',
-  number: '',
+  phone: '',
 };
 
 const ContactForm = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
 
   const handleSubmit = (values, { resetForm }) => {
     const isIncludes = contacts.some(
-      ({ name, number }) =>
+      ({ name, phone }) =>
         name.toLowerCase() === values.name.toLowerCase() ||
-        number === values.number
+        phone === values.phone
     );
     if (isIncludes) {
-      alert('A contact with the same name or number is already in contacts');
+      alert('A contact with the same name or phone is already in contacts');
       return;
     }
 
-    // dispatch(addContact(values));
+    dispatch(addContact(values));
     resetForm();
   };
 
@@ -68,10 +67,10 @@ const ContactForm = () => {
           <Field type="text" name="name" />
           <ErrorMessage name="name" component="div" />
         </label>
-        <label htmlFor="number">
+        <label htmlFor="phone">
           Number
-          <Field type="tel" name="number" />
-          <ErrorMessage name="number" component="div" />
+          <Field type="tel" name="phone" />
+          <ErrorMessage name="phone" component="div" />
         </label>
         <button type="submit">Add contact</button>
       </FormEl>
